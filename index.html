@@ -1,13 +1,189 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
-    <title>Gamedev Canvas Workshop</title>
+    <title>JS Experiments</title>
+    <style>
+        header {
+            height: 60px;
+        }
 
+        .image-cont {
+            height: 300px;
+            width: 500px;
+            background-color: rgba(255, 152, 0, 0.32);
+        }
+
+        .image-cont img {
+            width: 80%;
+            object-fit: contain;
+        }
+
+        .canvas-cont {
+            height: 300px;
+            background-color: rgba(255, 152, 0, 0.32);
+            width: 400px;
+            margin-top: 30px;
+        }
+
+        canvas {
+            user-select: none;
+        }
+
+        .crop-select {
+            position: absolute;
+            resize: both;
+            width: 100px;
+            height: 100px;
+            overflow: auto;
+            background: transparent;
+            border: 2px dashed blue;
+        }
+
+        .btn-cont {
+            width: auto;
+            display: inline-block;
+            position: relative;
+        }
+
+        button {
+            background-color: pink;
+            border-radius: 50%;
+            width: 100px;
+            outline: none;
+            height: 100px;
+        }
+    </style>
 </head>
-<body>
-  Hello...
-  Take a look at the canvas <a href='canvas/index.html'>Play</canvas>
 
+<body>
+    <div class="image-cont">
+        <canvas id="canvas1" width="400" height="400">
+        An alternative text describing what your canvas displays.
+      </canvas>
+    </div>
+    <div class="btn-cont">
+        <button class="crop-img-btn">Lets Crop!</button>
+    </div>
+    <div class="canvas-cont">
+        <canvas id="canvas2" width="400" height="300">
+          An alternative text describing what your canvas displays.
+        </canvas>
+    </div>
+
+
+    <script>
+        var canvas = document.getElementById('canvas2');
+        var canvas1 = document.getElementById('canvas1');
+
+        var img = document.getElementsByTagName("img")[0];
+        var canvasCont = document.getElementsByClassName('canvas-cont')[0];
+        var imgCont = document.getElementsByClassName('image-cont')[0];
+        var context = canvas.getContext("2d");
+        var context2 = canvas1.getContext("2d");
+        var cropHeight, cropWidth, cropLeftOffset, cropTopOffset;
+        var img3 = new Image();
+        document.getElementsByTagName('button')[0].addEventListener("click", function() {
+            var cropDiv = document.getElementsByClassName('crop-select')[0];
+            cropWidth = cropDiv.offsetWidth;
+            cropHeight = cropDiv.offsetHeight;
+            console.log(cropHeight + "  " + cropWidth + " " + cropTopOffset + " " + cropLeftOffset);
+
+            context.drawImage(img3, cropLeftOffset, cropTopOffset, cropWidth, cropHeight, 20, 20, 300, 300);
+        }, false);
+
+        var img2 = new Image();
+        //img2.setAttribute("crossOrigin", "Anonymous");
+        img2.onload = function() {
+            //context2.drawImage(img, 0, 0, 400, 300, 20, 20, 400, 400);
+            context2.drawImage(img2, 0, 0, 400, 300);
+            var imageURI = canvas1.toDataURL("image/png");
+            img3.src = imageURI;
+        }
+        img2.src = "images/image1.jpg";
+
+        canvas1.addEventListener("click", getUserSelection, false);
+
+        // canvas1.addEventListener("mousemove", function(e){
+        //   console.log("mousemove fired");
+        //   var newDiv = document.querySelector(".crop-select");
+        //   var left = e.clientX;
+        //   var top = e.clientY;
+        //   newDiv.style.top = top + "px";
+        //   newDiv.style.left = left + "px";
+        // }, false);
+
+        function getUserSelection(e) {
+            if (document.getElementsByClassName('crop-select')[0]) {
+                document.getElementsByClassName('crop-select')[0].remove();
+            }
+            console.log("heloc");
+            //img.style.opacity = "0.5"
+            var left = e.clientX;
+            var top = e.clientY;
+            var newDiv = document.createElement('div');
+            imgCont.appendChild(newDiv);
+            newDiv.classList.add('crop-select');
+            newDiv.style.top = top + "px";
+            newDiv.style.left = left + "px";
+            newDiv.setAttribute("draggable", "true");
+            cropTopOffset = top;
+            cropLeftOffset = left;
+            // document.getElementsByClassName("crop-select")[0].addEventListener("mousemove", function(e){
+            //   console.log("mousemove fired");
+            //   var newDiv = document.querySelector(".crop-select");
+            //   var left = e.clientX;
+            //   var top = e.clientY;
+            //   newDiv.style.top = top + "px";
+            //   newDiv.style.left = left + "px";
+            // }, false);
+            document.getElementsByClassName("crop-select")[0].addEventListener("dragstart", function(e) {
+                e.stopPropagation();
+                dragSrcEl = this;
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', this.innerHTML);
+            }, false);
+        }
+
+        canvas1.addEventListener("drop", function(e){
+            e.preventDefault();
+            console.log("drop fired");
+            if (e.stopPropagation) {
+             e.stopPropagation(); // Stops some browsers from redirecting.
+            }
+            var newDiv = document.querySelector(".crop-select");
+            var left = e.clientX;
+            var top = e.clientY;
+            newDiv.style.top = top + "px";
+            newDiv.style.left = left + "px";
+            //this.innerHTML = e.dataTransfer.getData('text/html');
+           return false;
+        }, false);
+        canvas1.addEventListener("dragover", function(e){
+          e.preventDefault();
+        }, false);
+        document.querySelector(".crop-select")[0].addEventListener("drop", function(e){
+            e.preventDefault();
+            console.log("drop fired");
+            if (e.stopPropagation) {
+             e.stopPropagation(); // Stops some browsers from redirecting.
+            }
+            var newDiv = document.querySelector(".crop-select");
+            var left = e.clientX;
+            var top = e.clientY;
+            newDiv.style.top = top + "px";
+            newDiv.style.left = left + "px";
+            //this.innerHTML = e.dataTransfer.getData('text/html');
+           return false;
+        }, false);
+        canvas1.addEventListener("dragover", function(e){
+          e.preventDefault();
+        }, false);
+        document.querySelector(".crop-select")[0].addEventListener("dragover", function(e){
+          e.preventDefault();
+        }, false);
+    </script>
 </body>
+
 </html>
