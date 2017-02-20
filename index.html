@@ -7,12 +7,14 @@
     <style>
       body{
         margin: auto 0;
-        background: rgb(234, 234, 234);
+        background: #fff;
+        height: 100%;
+        overflow: hidden;
       }
 
       .header-cont{
-        background-color: #000;
-        height: 100px;
+        background-color: #00073a;
+        height: 70px;
         padding: 30px;
       }
 
@@ -24,7 +26,7 @@
 
       .tool-cont{
         width:100%;
-        height: 450px;
+        height: 500px;
         border-bottom: 1px solid #000;
       }
 
@@ -32,7 +34,7 @@
         float: left;
         height: 100%;
         width: 50%;
-        border-right: 1px dashed green;
+        border-right: 2px dashed #00073a;
       }
       .result-cont{
         float: right;
@@ -40,43 +42,97 @@
         width: 50%;
       }
 
-      .btn-cont{
-        padding-left: 20px;
-      }
-      #crop-canvas{
-        padding-top: 20px;
-        padding-left: 20px;
+      .crop-transition{
+        transform: rotate(45deg);
+        display: inline-block;
+        background: white;
+        color: black;
+        margin: 0px 14px;
       }
 
+      .btn-cont{
+        padding-top: 20px;
+        padding-left: 40px;
+      }
+
+      button{
+        width: 100px;
+        height: 50px;
+        background: blue;
+        border: 0;
+        color: white;
+      }
+
+      #crop-canvas{
+        display: none;
+        padding-top: 40px;
+        padding-left: 40px;
+      }
+
+      .placeholder-div{
+        margin-top: 40px;
+        margin-left: 40px;
+        width: 568px;
+        text-align: center;
+        height: 320px;
+        border: 2px solid black;
+      }
+      
+      .placeholder-div img{
+        height: 80px;
+        padding-top: 80px;
+        margin-right: 10px;
+      }
+
+      .placeholder-div p{
+        font-family: sans-serif;
+        color: grey;
+        font-size: 14px;
+      }
     </style>
 </head>
 
 <body>
   <div class="header-cont">
     <header>
-      <h1>Image crop with canvas</h1>
+      <h1>Image cr<span class="crop-transition heading-span">op</span> with canvas</h1>
     </header>
   </div>
   <div class="tool-cont">
     <div class="canvas-cont">
-      <canvas id="crop-canvas" width="400" height="300">
+      <div class="placeholder-div">
+        <img src="images/placeholder.png" />
+        <p>Upload an image or drag and drop one from your system or use a sample ;)</p>
+      </div>
+      <canvas id="crop-canvas" width="568" height="320">
         An alternative text describing what your canvas displays.
       </canvas>
       <div class="btn-cont">
         <button>Crop</button>
-        <button>Upload Image</button>
+        <button>Upload</button>
       </div>
     </div>
     <div class="result-cont">
     </div>
   </div>
   <script>
+    /***top header style*****/
+    var heading = document.getElementsByTagName("h1")[0];
+    heading.addEventListener("mouseover", function(){
+      var transitionSpan = document.getElementsByClassName("heading-span")[0];
+      transitionSpan.classList.remove('crop-transition');
+    });
+    heading.addEventListener("mouseout", function(){
+      var transitionSpan = document.getElementsByClassName("heading-span")[0];
+      transitionSpan.classList.add('crop-transition');
+    });
+    /**************/
     var cropCanvas = document.getElementById('crop-canvas');
     var cropContext = cropCanvas.getContext("2d");
     var sampleImage  = new Image();
     sampleImage.onload = function() {
         //context2.drawImage(img, 0, 0, 400, 300, 20, 20, 400, 400);
-        cropContext.drawImage(sampleImage, 0, 0, 400, 300);
+        cropContext.drawImage(sampleImage, 0, 0, 568, 320);
         //var imageURI = canvas1.toDataURL("image/png");
     }
     sampleImage.src = "images/image1.jpg";
