@@ -4,38 +4,51 @@
 <head>
     <meta charset="utf-8" />
     <title>JS Experiments</title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arimo" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Cabin" />
     <style>
       body{
         margin: auto 0;
         background: #fff;
         height: 100%;
-        overflow: hidden;
+        font-family: Cabin;
       }
 
       .header-cont{
-        background-color: #00073a;
-        height: 70px;
-        padding: 30px;
+        font-size: 15px;
+        background-color: #03a9f4;
+        height: 100px;
+        position: relative;
+        top: -22px;
+        display: block;
+        margin: auto 0;
+      }
+
+      header{
+        display: block;
+        padding-top: 20px;
       }
 
       h1{
         padding-left: 40px;
         color: #fff;
-        font-family: sans-serif;
       }
 
       .tool-cont{
+        padding-left: 23%;
         width:100%;
         height: 500px;
-        border-bottom: 1px solid #000;
+        /*border-bottom: 1px solid #000;*/
       }
 
       .canvas-cont{
         float: left;
         height: 100%;
         width: 50%;
-        border-right: 2px dashed #00073a;
+        position: relative;
+        /*border-right: 2px dashed #03a9f4;*/
       }
+
       .result-cont{
         float: right;
         height: 100%;
@@ -46,7 +59,7 @@
         transform: rotate(45deg);
         display: inline-block;
         background: white;
-        color: black;
+        color: #03a9f4;
         margin: 0px 14px;
       }
 
@@ -56,17 +69,18 @@
       }
 
       button{
-        width: 100px;
-        height: 50px;
-        background: blue;
+        width: 70px;
+        height: 40px;
+        background: #03a9f4;
         border: 0;
         color: white;
+        border-radius: 4px;
+        font-size: 14px;
+        outline: none;
       }
 
       #crop-canvas{
         display: none;
-        padding-top: 40px;
-        padding-left: 40px;
       }
 
       .placeholder-div{
@@ -77,18 +91,30 @@
         height: 320px;
         border: 2px solid black;
       }
-      
-      .placeholder-div img{
-        height: 80px;
-        padding-top: 80px;
-        margin-right: 10px;
-      }
 
       .placeholder-div p{
         font-family: sans-serif;
         color: grey;
         font-size: 14px;
       }
+
+      .sample-img{
+        width: 568px;
+        height: 320px;
+      }
+
+    .crop-select {
+        position: absolute;
+        resize: both;
+        width: 100px;
+        height: 100px;
+        overflow: auto;
+        background: transparent;
+        border: 2px dashed blue;
+        top: 160px;
+        left: 280px;
+    }
+
     </style>
 </head>
 
@@ -101,48 +127,117 @@
   <div class="tool-cont">
     <div class="canvas-cont">
       <div class="placeholder-div">
-        <img src="images/placeholder.png" />
-        <p>Upload an image or drag and drop one from your system or use a sample ;)</p>
+        <!-- <img src="images/placeholder.png" /> -->
+        <img src="images/image1.jpg" class="sample-img" />
+        <!-- <p>Upload an image or drag and drop one from your system or use a sample ;)</p> -->
+        <canvas id="crop-canvas" width="568" height="320">
+          An alternative text describing what your canvas displays.
+        </canvas>
       </div>
-      <canvas id="crop-canvas" width="568" height="320">
-        An alternative text describing what your canvas displays.
-      </canvas>
       <div class="btn-cont">
-        <button>Crop</button>
-        <button>Upload</button>
+        <button class="crop-btn">Crop</button>
+        <button class="upload-btn">Upload</button>
       </div>
     </div>
-    <div class="result-cont">
-    </div>
+    <!-- <div class="result-cont">
+    </div> -->
   </div>
+
+
   <script>
+    var _document = document;
     /***top header style*****/
-    var heading = document.getElementsByTagName("h1")[0];
+    var heading = _document.getElementsByTagName("h1")[0];
     heading.addEventListener("mouseover", function(){
-      var transitionSpan = document.getElementsByClassName("heading-span")[0];
+      var transitionSpan = _document.getElementsByClassName("heading-span")[0];
       transitionSpan.classList.remove('crop-transition');
     });
     heading.addEventListener("mouseout", function(){
-      var transitionSpan = document.getElementsByClassName("heading-span")[0];
+      var transitionSpan = _document.getElementsByClassName("heading-span")[0];
       transitionSpan.classList.add('crop-transition');
     });
     /**************/
-    var cropCanvas = document.getElementById('crop-canvas');
-    var cropContext = cropCanvas.getContext("2d");
-    var sampleImage  = new Image();
-    sampleImage.onload = function() {
-        //context2.drawImage(img, 0, 0, 400, 300, 20, 20, 400, 400);
-        cropContext.drawImage(sampleImage, 0, 0, 568, 320);
-        //var imageURI = canvas1.toDataURL("image/png");
-    }
-    sampleImage.src = "images/image1.jpg";
 
-    cropCanvas.addEventListener("click", getUserSelection, false);
+    var cropButton = _document.querySelector(".crop-btn");
+    var cropCanvas = _document.getElementById('crop-canvas');
 
-    function getUserSelection(){
-      //TODO
-      console.log("fil it");
-    }
+    cropButton.addEventListener("click", createCropArea, false);
+
+    function createCropArea(e){
+      _document.querySelector(".sample-img").style.display = "none";
+
+      var cropContext = cropCanvas.getContext("2d");
+      var sampleImage  = new Image();
+      sampleImage.onload = function() {
+          //context2.drawImage(img, 0, 0, 400, 300, 20, 20, 400, 400);
+          cropContext.drawImage(sampleImage, 0, 0, 568, 320);
+          //var imageURI = canvas1.toDataURL("image/png");
+          cropCanvas.style.display = "block";
+      }
+      sampleImage.src = "images/image1.jpg";
+      if (_document.getElementsByClassName('crop-select')[0]) {
+          _document.getElementsByClassName('crop-select')[0].remove();
+      }
+      var left = e.clientX;
+      var top = e.clientY;
+      var newDiv = _document.createElement('div');
+      canvasCont = _document.querySelector(".canvas-cont");
+      canvasCont.appendChild(newDiv);
+      newDiv.classList.add('crop-select');
+      newDiv.setAttribute("draggable", "true");
+      cropTopOffset = top;
+      cropLeftOffset = left;
+      document.getElementsByClassName("crop-select")[0].addEventListener("dragstart", function(e) {
+          e.stopPropagation();
+          dragSrcEl = this;
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('text/html', this.innerHTML);
+      }, false);
+
+      document.querySelector(".crop-select").addEventListener("dragover", function(e){
+        e.preventDefault();
+      }, false);
+
+      document.querySelector(".crop-select").addEventListener("drop", function(e){
+          e.preventDefault();
+          console.log("drop fired");
+          if (e.stopPropagation) {
+           e.stopPropagation(); // Stops some browsers from redirecting.
+          }
+          var newDiv = document.querySelector(".crop-select");
+          var left = e.clientX;
+          var top = e.clientY;
+          newDiv.style.top = top + "px";
+          newDiv.style.left = left + "px";
+          //this.innerHTML = e.dataTransfer.getData('text/html');
+         return false;
+      }, false);
+    };
+
+
+    cropCanvas.addEventListener("drop", function(e){
+        e.preventDefault();
+        console.log("drop fired");
+        if (e.stopPropagation) {
+         e.stopPropagation(); // Stops some browsers from redirecting.
+        }
+        var newDiv = document.querySelector(".crop-select");
+        var left = e.clientX;
+        var top = e.clientY;
+        newDiv.style.top = top + "px";
+        newDiv.style.left = left + "px";
+        //this.innerHTML = e.dataTransfer.getData('text/html');
+       return false;
+    }, false);
+
+    cropCanvas.addEventListener("dragover", function(e){
+      e.preventDefault();
+    }, false);
+
+    cropCanvas.addEventListener("dragover", function(e){
+      e.preventDefault();
+    }, false);
+
 
   </script>
 </body>
