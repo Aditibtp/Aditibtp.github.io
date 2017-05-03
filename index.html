@@ -16,7 +16,7 @@
 
       .header-cont{
         font-size: 15px;
-        background-color: #03a9f4;
+        background-color: #084a58;
         height: 100px;
         position: relative;
         top: -22px;
@@ -32,6 +32,9 @@
       h1{
         padding-left: 40px;
         color: #fff;
+        font-size: 1.8em;
+        font-weight: 100;
+        font-family: sans-serif;
       }
 
       .tool-cont{
@@ -45,8 +48,8 @@
         float: left;
         height: 100%;
         width: 50%;
-        position: relative;
-        /*border-right: 2px dashed #03a9f4;*/
+        /*position: relative;*/
+        /*border-right: 2px dashed #084a58;*/
       }
 
       .result-cont{
@@ -59,7 +62,7 @@
         transform: rotate(45deg);
         display: inline-block;
         background: white;
-        color: #03a9f4;
+        color: #084a58;
         margin: 0px 14px;
       }
 
@@ -84,6 +87,8 @@
       }
 
       .placeholder-div{
+        position: relative;
+        box-shadow: 2px -2px 10px 2px rgb(158, 158, 158);
         margin-top: 40px;
         margin-left: 40px;
         width: 568px;
@@ -110,9 +115,16 @@
         height: 100px;
         overflow: auto;
         background: transparent;
-        border: 2px dashed blue;
-        top: 160px;
-        left: 280px;
+        border: 2px dashed #fff;
+        background: rgba(0, 0, 0, 0.23);
+        top: 300px;
+        left: 400px;
+    }
+
+    #filter-canvas{
+      z-index: 10;
+      position: absolute;
+      display: none;
     }
 
     </style>
@@ -130,13 +142,19 @@
         <!-- <img src="images/placeholder.png" /> -->
         <img src="images/image1.jpg" class="sample-img" />
         <!-- <p>Upload an image or drag and drop one from your system or use a sample ;)</p> -->
+        <canvas id="filter-canvas">
+          An alternative text describing what your canvas displays.
+        </canvas>
         <canvas id="crop-canvas" width="568" height="320">
           An alternative text describing what your canvas displays.
         </canvas>
       </div>
-      <div class="btn-cont">
+      <div class="btn-cont effect-toolbar">
         <button class="crop-btn">Crop</button>
         <button class="upload-btn">Upload</button>
+        <button class="crop-done">Done</button>
+        <button class="crop-btn">G/W</button>
+        <button class="crop-btn">Blue</button>
       </div>
     </div>
     <!-- <div class="result-cont">
@@ -146,6 +164,11 @@
 
   <script>
     var _document = document;
+    var cropTopOffset;
+    var cropLeftOffset;
+    var cropCanvas = _document.getElementById('crop-canvas');
+    var cropContext = cropCanvas.getContext("2d");
+    var cropImage = new Image();
     /***top header style*****/
     var heading = _document.getElementsByTagName("h1")[0];
     heading.addEventListener("mouseover", function(){
@@ -159,7 +182,6 @@
     /**************/
 
     var cropButton = _document.querySelector(".crop-btn");
-    var cropCanvas = _document.getElementById('crop-canvas');
 
     cropButton.addEventListener("click", createCropArea, false);
 
@@ -170,8 +192,9 @@
       var sampleImage  = new Image();
       sampleImage.onload = function() {
           //context2.drawImage(img, 0, 0, 400, 300, 20, 20, 400, 400);
-          cropContext.drawImage(sampleImage, 0, 0, 568, 320);
-          //var imageURI = canvas1.toDataURL("image/png");
+          cropContext.drawImage(sampleImage, 0, 0, sampleImage.width, sampleImage.height, 0, 0, 568, 320);
+          var imageURI = cropCanvas.toDataURL("image/png");
+          cropImage.src = imageURI;
           cropCanvas.style.display = "block";
       }
       sampleImage.src = "images/image1.jpg";
@@ -189,6 +212,9 @@
       cropLeftOffset = left;
       document.getElementsByClassName("crop-select")[0].addEventListener("dragstart", function(e) {
           e.stopPropagation();
+          deltaX = e.clientX - document.getElementsByClassName("crop-select")[0].getBoundingClientRect().left;
+          deltaY = e.clientY - document.getElementsByClassName("crop-select")[0].getBoundingClientRect().top;
+          console.log(deltaX, deltaY);
           dragSrcEl = this;
           e.dataTransfer.effectAllowed = 'move';
           e.dataTransfer.setData('text/html', this.innerHTML);
@@ -200,7 +226,7 @@
 
       document.querySelector(".crop-select").addEventListener("drop", function(e){
           e.preventDefault();
-          console.log("drop fired");
+          console.log("drop fired in crop select");
           if (e.stopPropagation) {
            e.stopPropagation(); // Stops some browsers from redirecting.
           }
@@ -217,13 +243,18 @@
 
     cropCanvas.addEventListener("drop", function(e){
         e.preventDefault();
-        console.log("drop fired");
+        console.log("drop fired in canvas");
         if (e.stopPropagation) {
          e.stopPropagation(); // Stops some browsers from redirecting.
         }
-        var newDiv = document.querySelector(".crop-select");
-        var left = e.clientX;
-        var top = e.clientY;
+        var newDiv = _document.querySelector(".crop-select");
+        var position = newDiv.getBoundingClientRect();
+        var cropWidth = newDiv.offsetWidth;
+        var cropHeight = newDiv.offsetHeight;
+        var finalLeft = position.left
+        var finalTop = position.top
+        var left = e.pageX - deltaX//- position.left;
+        var top = e.pageY - deltaY//- position.top;
         newDiv.style.top = top + "px";
         newDiv.style.left = left + "px";
         //this.innerHTML = e.dataTransfer.getData('text/html');
@@ -238,8 +269,33 @@
       e.preventDefault();
     }, false);
 
+    var cropDoneBtn = _document.querySelector('.crop-done');
+    cropDoneBtn.addEventListener('click', function(){
+      console.log('done clicked');
+      var filterCanvas = document.querySelector('#filter-canvas');
+      var filterContext = filterCanvas.getContext('2d');
 
+      var cropDiv = _document.querySelector('.crop-select');
+      cropWidth = cropDiv.offsetWidth;
+      cropHeight = cropDiv.offsetHeight;
+      //cropDiv.style.display = 'none';
+      var newDiv = _document.querySelector(".crop-select");
+      var placeholderDivCor = _document.querySelector(".placeholder-div").getBoundingClientRect();
+      var position = newDiv.getBoundingClientRect();
+      console.log(position);
+      console.log(placeholderDivCor);
+      cropDiv.style.display = 'none';
+      var cropLeftOffset =  left = position.left - placeholderDivCor.left; //e.clientX;
+      var cropTopOffset = top = position.top - placeholderDivCor.top; //e.clientY;
+      console.log(cropHeight + "  " + cropWidth + " " + cropTopOffset + " " + cropLeftOffset);
+
+      //cropCanvas.style.display = 'none';
+
+      filterCanvas.style.height = cropHeight;
+      filterCanvas.style.width = cropWidth;
+      filterCanvas.style.display = 'block';
+      filterContext.drawImage(cropImage, cropLeftOffset, cropTopOffset, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
+    }, false);
   </script>
 </body>
-
 </html>
