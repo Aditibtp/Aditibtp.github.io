@@ -39,7 +39,7 @@
 
       .tool-cont{
         padding-left: 23%;
-        width:100%;
+        width:65%;
         height: 500px;
         /*border-bottom: 1px solid #000;*/
       }
@@ -48,8 +48,6 @@
         float: left;
         height: 100%;
         width: 50%;
-        /*position: relative;*/
-        /*border-right: 2px dashed #084a58;*/
       }
 
       .result-cont{
@@ -94,7 +92,6 @@
         width: 568px;
         text-align: center;
         height: 320px;
-        border: 2px solid black;
       }
 
       .placeholder-div p{
@@ -121,10 +118,31 @@
         left: 400px;
     }
 
+    .crop-canvas-background{
+      filter: opacity(0.6);
+    }
+
     #filter-canvas{
+      border: 1px dashed #fff;
       z-index: 10;
       position: absolute;
       display: none;
+    }
+
+    .grascale-filter{
+      filter: grayscale(0.8);
+    }
+
+    .sepia-filter{
+      filter: sepia(0.7);
+    }
+
+    input, .hide{
+      display: none;
+    }
+
+    .show{
+      display: block;
     }
 
     </style>
@@ -139,9 +157,8 @@
   <div class="tool-cont">
     <div class="canvas-cont">
       <div class="placeholder-div">
-        <!-- <img src="images/placeholder.png" /> -->
-        <img src="images/image1.jpg" class="sample-img" />
-        <!-- <p>Upload an image or drag and drop one from your system or use a sample ;)</p> -->
+        <input type="file" id="image-input" accept="image/*" onchange="imageUpload('event')" >
+        <img src="images/flowers.jpg" class="sample-img" />
         <canvas id="filter-canvas">
           An alternative text describing what your canvas displays.
         </canvas>
@@ -150,18 +167,16 @@
         </canvas>
       </div>
       <div class="btn-cont effect-toolbar">
-        <button class="crop-btn">Crop</button>
-        <button class="upload-btn">Upload</button>
-        <button class="crop-done">Done</button>
-        <button class="crop-btn">G/W</button>
-        <button class="crop-btn">Blue</button>
+        <button class="crop-btn" onclick="createCropArea('event')">Crop</button>
+        <button class="upload-btn" onclick="uploadImage('event')">Upload</button>
+        <button class="crop-done" onclick="cropAreaSelelcted('event')">Done</button>
+        <button class="crop-btn gw-btn-filter" onclick="applyGwFilter('event')">G/W</button>
+        <button class="crop-btn sepia-btn-filter" onclick="applySepiaFilter('event')">Blue</button>
       </div>
     </div>
-    <!-- <div class="result-cont">
-    </div> -->
   </div>
 
-
+  <script type="text/javascript" src="./canvas-script.js"></script>
   <script>
     var _document = document;
     var cropTopOffset;
@@ -179,123 +194,35 @@
       var transitionSpan = _document.getElementsByClassName("heading-span")[0];
       transitionSpan.classList.add('crop-transition');
     });
-    /**************/
 
-    var cropButton = _document.querySelector(".crop-btn");
+    var cropCanvasLib = new CropCanvasLib();
 
-    cropButton.addEventListener("click", createCropArea, false);
+    function createCropArea(){
+      cropCanvasLib.createCropArea();
+    }
 
-    function createCropArea(e){
-      _document.querySelector(".sample-img").style.display = "none";
+    function cropAreaSelelcted(e){
+      cropCanvasLib.cropAreaSelelcted(e);
+    }
 
-      var cropContext = cropCanvas.getContext("2d");
-      var sampleImage  = new Image();
-      sampleImage.onload = function() {
-          //context2.drawImage(img, 0, 0, 400, 300, 20, 20, 400, 400);
-          cropContext.drawImage(sampleImage, 0, 0, sampleImage.width, sampleImage.height, 0, 0, 568, 320);
-          var imageURI = cropCanvas.toDataURL("image/png");
-          cropImage.src = imageURI;
-          cropCanvas.style.display = "block";
-      }
-      sampleImage.src = "images/image1.jpg";
-      if (_document.getElementsByClassName('crop-select')[0]) {
-          _document.getElementsByClassName('crop-select')[0].remove();
-      }
-      var left = e.clientX;
-      var top = e.clientY;
-      var newDiv = _document.createElement('div');
-      canvasCont = _document.querySelector(".canvas-cont");
-      canvasCont.appendChild(newDiv);
-      newDiv.classList.add('crop-select');
-      newDiv.setAttribute("draggable", "true");
-      cropTopOffset = top;
-      cropLeftOffset = left;
-      document.getElementsByClassName("crop-select")[0].addEventListener("dragstart", function(e) {
-          e.stopPropagation();
-          deltaX = e.clientX - document.getElementsByClassName("crop-select")[0].getBoundingClientRect().left;
-          deltaY = e.clientY - document.getElementsByClassName("crop-select")[0].getBoundingClientRect().top;
-          console.log(deltaX, deltaY);
-          dragSrcEl = this;
-          e.dataTransfer.effectAllowed = 'move';
-          e.dataTransfer.setData('text/html', this.innerHTML);
-      }, false);
+    function uploadImage(){
+      var input = document.querySelector('input');
+      input.click();
+    }
 
-      document.querySelector(".crop-select").addEventListener("dragover", function(e){
-        e.preventDefault();
-      }, false);
+    function imageUpload(event){
+      cropCanvasLib.uploadImage(event);
+    }
 
-      document.querySelector(".crop-select").addEventListener("drop", function(e){
-          e.preventDefault();
-          console.log("drop fired in crop select");
-          if (e.stopPropagation) {
-           e.stopPropagation(); // Stops some browsers from redirecting.
-          }
-          var newDiv = document.querySelector(".crop-select");
-          var left = e.clientX;
-          var top = e.clientY;
-          newDiv.style.top = top + "px";
-          newDiv.style.left = left + "px";
-          //this.innerHTML = e.dataTransfer.getData('text/html');
-         return false;
-      }, false);
-    };
-
-
-    cropCanvas.addEventListener("drop", function(e){
-        e.preventDefault();
-        console.log("drop fired in canvas");
-        if (e.stopPropagation) {
-         e.stopPropagation(); // Stops some browsers from redirecting.
-        }
-        var newDiv = _document.querySelector(".crop-select");
-        var position = newDiv.getBoundingClientRect();
-        var cropWidth = newDiv.offsetWidth;
-        var cropHeight = newDiv.offsetHeight;
-        var finalLeft = position.left
-        var finalTop = position.top
-        var left = e.pageX - deltaX//- position.left;
-        var top = e.pageY - deltaY//- position.top;
-        newDiv.style.top = top + "px";
-        newDiv.style.left = left + "px";
-        //this.innerHTML = e.dataTransfer.getData('text/html');
-       return false;
-    }, false);
-
-    cropCanvas.addEventListener("dragover", function(e){
-      e.preventDefault();
-    }, false);
-
-    cropCanvas.addEventListener("dragover", function(e){
-      e.preventDefault();
-    }, false);
-
-    var cropDoneBtn = _document.querySelector('.crop-done');
-    cropDoneBtn.addEventListener('click', function(){
-      console.log('done clicked');
+    function applyGwFilter(){
       var filterCanvas = document.querySelector('#filter-canvas');
-      var filterContext = filterCanvas.getContext('2d');
+      filterCanvas.classList.add('grascale-filter');
+    }
 
-      var cropDiv = _document.querySelector('.crop-select');
-      cropWidth = cropDiv.offsetWidth;
-      cropHeight = cropDiv.offsetHeight;
-      //cropDiv.style.display = 'none';
-      var newDiv = _document.querySelector(".crop-select");
-      var placeholderDivCor = _document.querySelector(".placeholder-div").getBoundingClientRect();
-      var position = newDiv.getBoundingClientRect();
-      console.log(position);
-      console.log(placeholderDivCor);
-      cropDiv.style.display = 'none';
-      var cropLeftOffset =  left = position.left - placeholderDivCor.left; //e.clientX;
-      var cropTopOffset = top = position.top - placeholderDivCor.top; //e.clientY;
-      console.log(cropHeight + "  " + cropWidth + " " + cropTopOffset + " " + cropLeftOffset);
-
-      //cropCanvas.style.display = 'none';
-
-      filterCanvas.style.height = cropHeight;
-      filterCanvas.style.width = cropWidth;
-      filterCanvas.style.display = 'block';
-      filterContext.drawImage(cropImage, cropLeftOffset, cropTopOffset, cropWidth, cropHeight, 0, 0, cropWidth, cropHeight);
-    }, false);
+    function applySepiaFilter(){
+      var filterCanvas = document.querySelector('#filter-canvas');
+      filterCanvas.classList.add('sepia-filter');
+    }
   </script>
 </body>
 </html>
