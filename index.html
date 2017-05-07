@@ -11,11 +11,11 @@
         margin: auto 0;
         background: #fff;
         height: 100%;
-        font-family: Cabin;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
 
       .header-cont{
-        background: linear-gradient(to right, #084a58, #0da3c3);
+        background: -webkit-linear-gradient(left top, #084a58, #177b90);
         font-size: 23px;
         height: 140px;
         position: relative;
@@ -31,10 +31,9 @@
 
       h1{
         padding-left: 140px;
-        text-shadow: 5px 5px #000000;
+        text-shadow: 5px 0px #000000;
         color: #fff;
         font-weight: 200;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
 
       .tool-cont{
@@ -56,10 +55,12 @@
       }
 
       .crop-transition{
+        transition: transform 200ms;
+        text-shadow: 0 0 #fff;
         transform: rotate(45deg);
         display: inline-block;
-        background: white;
-        color: #084a58;
+        border: 1px dashed #fff;
+        color: #fff;
         margin: 0px 14px;
       }
 
@@ -81,6 +82,15 @@
 
       #crop-canvas{
         display: none;
+      }
+
+      .description{
+        font-size: 1em;
+        line-height: 1.5;
+        font-weight: 300;
+        color: #3c3c3c;
+        padding-left: 250px;
+        width: 750px;
       }
 
       .placeholder-div{
@@ -107,9 +117,8 @@
     .crop-select {
         position: absolute;
         resize: both;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
+        width: 20px;
+        height: 20px;
         overflow: auto;
         background: transparent;
         border: 2px dashed #fff;
@@ -163,9 +172,12 @@
 <body>
   <div class="header-cont">
     <header>
-      <!-- <h1>Image cr<span class="crop-transition heading-span">op</span> with canvas</h1> -->
-      <h1>Crop and Filter</h1>
+      <h1>Cr<span class="heading-span">op</span> and Filter</h1>
     </header>
+  </div>
+  <div class="description">
+    <p>Pure javascript tool to crop images using canvas and apply different kinds of filters provided by css3 and HTML5 canvas.
+       Use the sample image below to try the filters on or upload any landscape image(for now ;) and have fun with crop tool and filters</p>
   </div>
   <div class="tool-cont">
     <div class="canvas-cont">
@@ -204,11 +216,11 @@
     var heading = _document.getElementsByTagName("h1")[0];
     heading.addEventListener("mouseover", function(){
       var transitionSpan = _document.getElementsByClassName("heading-span")[0];
-      transitionSpan.classList.remove('crop-transition');
+      transitionSpan.classList.add('crop-transition');
     });
     heading.addEventListener("mouseout", function(){
       var transitionSpan = _document.getElementsByClassName("heading-span")[0];
-      transitionSpan.classList.add('crop-transition');
+      transitionSpan.classList.remove('crop-transition');
     });
 
     var cropCanvasLib = new CropCanvasLib();
