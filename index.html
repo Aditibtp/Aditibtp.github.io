@@ -17,15 +17,27 @@
       .header-cont{
         background: -webkit-linear-gradient(left top, #084a58, #177b90);
         font-size: 23px;
-        height: 140px;
-        position: relative;
-        top: -22px;
+        height: 120px;
         display: block;
         margin: auto 0;
       }
 
+      .header-shrink{
+        height: 80px;
+        transition: height 300ms;
+      }
+
+      .header-shrink h1{
+        font-size: 22px;
+      }
+
+      .header-shrink header{
+        padding-top: 40px;
+      }
+
       header{
         display: block;
+        height: 100%;
         padding-top: 20px;
       }
 
@@ -34,24 +46,15 @@
         text-shadow: 5px 0px #000000;
         color: #fff;
         font-weight: 200;
+        margin-top: 0;
       }
 
       .tool-cont{
         padding-left: 23%;
-        width:65%;
-        height: 500px;
       }
 
       .canvas-cont{
-        float: left;
         height: 100%;
-        width: 50%;
-      }
-
-      .result-cont{
-        float: right;
-        height: 100%;
-        width: 50%;
       }
 
       .crop-transition{
@@ -65,18 +68,22 @@
       }
 
       .btn-cont{
-        padding-top: 20px;
-        padding-left: 40px;
+        padding: 14px;
+        /* padding-left: 20px; */
+        margin-right: 600px;
+        margin-left: 40px;
+        background: #efefef;
       }
 
       button{
-        width: 70px;
+        width: 60px;
         height: 40px;
-        background: #03a9f4;
+        background: rgb(45, 154, 177);
         border: 0;
         color: white;
+        margin-left: 10px;
         border-radius: 4px;
-        font-size: 14px;
+        font-size: 13px;
         outline: none;
       }
 
@@ -85,6 +92,7 @@
       }
 
       .description{
+        margin: 40px 0;
         font-size: 1em;
         line-height: 1.5;
         font-weight: 300;
@@ -96,7 +104,7 @@
       .placeholder-div{
         position: relative;
         box-shadow: 2px -2px 10px 2px rgb(158, 158, 158);
-        margin-top: 40px;
+        margin-top: 20px;
         margin-left: 40px;
         width: 568px;
         text-align: center;
@@ -123,8 +131,8 @@
         background: transparent;
         border: 2px dashed #fff;
         background: rgba(0, 0, 0, 0.23);
-        top: 300px;
-        left: 400px;
+        top: 400px;
+        left: 500px;
     }
 
     .crop-canvas-background{
@@ -138,7 +146,7 @@
       display: none;
     }
 
-    .grascale-filter{
+    .grayscale-filter{
       filter: grayscale(1);
     }
 
@@ -166,11 +174,36 @@
       display: block;
     }
 
+    .filters-cont{
+      width: 100%;
+      margin: 50px 0;
+    }
+
+    .filter-box {
+      display: inline-block;
+      margin-left: 25px;
+      width: 100px;
+    }
+
+    .filter-box img{
+      object-fit: contain;
+      width: 100%;
+      border: 1px solid grey;
+    }
+
+    .filter-box p{
+      margin: 0;
+      font-size: 1em;
+      line-height: 1.5;
+      font-weight: 300;
+      color: #3c3c3c;
+    }
+
     </style>
 </head>
 
-<body>
-  <div class="header-cont">
+<body onscroll="resizeHeader()">
+  <div class="header-cont" id="main-header">
     <header>
       <h1>Cr<span class="heading-span">op</span> and Filter</h1>
     </header>
@@ -181,6 +214,12 @@
   </div>
   <div class="tool-cont">
     <div class="canvas-cont">
+      <div class="btn-cont effect-toolbar">
+        <button class="crop-btn" onclick="createCropArea('event')">Crop</button>
+        <button class="upload-btn" onclick="uploadImage('event')">Upload</button>
+        <button class="crop-done" onclick="cropAreaSelelcted('event')">Done</button>
+        <button class="crop-done">Reset</button>
+      </div>
       <div class="placeholder-div">
         <input type="file" id="image-input" accept="image/*" onchange="imageUpload('event')" >
         <img src="images/flowers.jpg" class="sample-img" />
@@ -191,15 +230,27 @@
           An alternative text describing what your canvas displays.
         </canvas>
       </div>
-      <div class="btn-cont effect-toolbar">
-        <button class="crop-btn" onclick="createCropArea('event')">Crop</button>
-        <button class="upload-btn" onclick="uploadImage('event')">Upload</button>
-        <button class="crop-done" onclick="cropAreaSelelcted('event')">Done</button>
-        <button class="crop-btn gw-btn-filter" onclick="applyFilter('grayscale')">G/W</button>
-        <button class="crop-btn sepia-btn-filter" onclick="applyFilter('sepia')">Sepia</button>
-        <button class="crop-btn sepia-btn-filter" onclick="applyFilter('rainy')">Rainy</button>
-        <button class="crop-btn sepia-btn-filter" onclick="applyFilter('evening')">Evening</button>
-        <button class="crop-btn sepia-btn-filter" onclick="applyFilter('dawn')">Dawn</button>
+    </div>
+    <div class="filters-cont">
+      <div class="filter-box grayscale-filter" onclick="applyFilter('grayscale')">
+        <img class"filter-img grayscale-filter" src="./images/flowers.jpg"/>
+        <p>Grayscale</p>
+      </div>
+      <div class="filter-box sepia-filter" onclick="applyFilter('sepia')">
+        <img class"filter-img sepia-filter" src="./images/flowers.jpg"/>
+        <p>Sepia</p>
+      </div>
+      <div class="filter-box rainy-filter" onclick="applyFilter('rainy')">
+        <img class"filter-img rainy-filter" src="./images/flowers.jpg"/>
+        <p>Rainy</p>
+      </div>
+      <div class="filter-box evening-filter" onclick="applyFilter('evening')">
+        <img class"filter-img evening-filter" src="./images/flowers.jpg"/>
+        <p>Evening</p>
+      </div>
+      <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
+        <img class"filter-img focus-filter" src="./images/flowers.jpg"/>
+        <p>Dawn<p>
       </div>
     </div>
   </div>
@@ -213,7 +264,7 @@
     var cropContext = cropCanvas.getContext("2d");
     var cropImage = new Image();
     /***top header style*****/
-    var heading = _document.getElementsByTagName("h1")[0];
+    var heading =  document.getElementById("main-header");
     heading.addEventListener("mouseover", function(){
       var transitionSpan = _document.getElementsByClassName("heading-span")[0];
       transitionSpan.classList.add('crop-transition');
@@ -222,6 +273,15 @@
       var transitionSpan = _document.getElementsByClassName("heading-span")[0];
       transitionSpan.classList.remove('crop-transition');
     });
+
+    function resizeHeader(){
+      var headerElement = document.getElementById("main-header");
+      if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+          headerElement.classList.add('header-shrink');
+      } else {
+          headerElement.classList.remove('header-shrink');
+      }
+    }
 
     var cropCanvasLib = new CropCanvasLib();
 

@@ -147,9 +147,10 @@ CropCanvasLib.prototype.clearCanvasArea = function(){
 CropCanvasLib.prototype.applyFilter = function(filter){
   this.filterApplied = true;
   var filterElement;
-  if(this.filterCanvas && this.filterCanvas.visible){
+  if(this.filterCanvas && this.filterCanvas.offsetParent !== null){
+    console.log(this.filterCanvas.width);
     filterElement = this.filterCanvas;
-  }else if(this.cropCanvas.width){
+  }else if(this.cropCanvas.width && this.cropCanvas.offsetParent !== null){
     filterElement = this.cropCanvas;
   }else{
     filterElement = this.imageEle;
