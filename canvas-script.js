@@ -9,6 +9,7 @@ function CropCanvasLib (){
   this.imageObjectSrc = "./images/flowers.jpg";
   this.deltaX;
   this.deltaY;
+  this.filterApplied = false;
 };
 
 
@@ -130,6 +131,7 @@ CropCanvasLib.prototype.uploadImage = function(){
 }
 
 CropCanvasLib.prototype.clearCanvasArea = function(){
+  this.filterApplied = false;
   if(this.filterCanvas && this.filterCanvas.visible){
     this.filterCanvas.getContext('2d').clearRect(0, 0, this.filterCanvas.width, this.filterCanvas.height);
     this.filterCanvas.style.display = 'none';
@@ -139,5 +141,28 @@ CropCanvasLib.prototype.clearCanvasArea = function(){
   }
   if(this.cropCanvas.visible){
     this.cropCanvasContext.clearRect(0, 0, 568, 320);
+  }
+}
+
+CropCanvasLib.prototype.applyFilter = function(filter){
+  this.filterApplied = true;
+  var filterElement;
+  if(this.filterCanvas && this.filterCanvas.visible){
+    filterElement = this.filterCanvas;
+  }else if(this.cropCanvas.width){
+    filterElement = this.cropCanvas;
+  }else{
+    filterElement = this.imageEle;
+  }
+  switch(filter){
+    case 'rainy':
+      filterElement.style.filter = 'grayscale(0.4) saturate(0.7)';
+      break;
+    case 'dawn':
+      filterElement.style.filter = 'hue-rotate(-20deg)';
+      break;
+    case 'evening':
+      filterElement.style.filter = 'hue-rotate(-40deg)'
+      break;
   }
 }

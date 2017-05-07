@@ -15,9 +15,9 @@
       }
 
       .header-cont{
-        font-size: 15px;
-        background-color: #084a58;
-        height: 100px;
+        background: linear-gradient(to right, #084a58, #0da3c3);
+        font-size: 23px;
+        height: 140px;
         position: relative;
         top: -22px;
         display: block;
@@ -30,18 +30,17 @@
       }
 
       h1{
-        padding-left: 40px;
+        padding-left: 140px;
+        text-shadow: 5px 5px #000000;
         color: #fff;
-        font-size: 1.8em;
-        font-weight: 100;
-        font-family: sans-serif;
+        font-weight: 200;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
       }
 
       .tool-cont{
         padding-left: 23%;
         width:65%;
         height: 500px;
-        /*border-bottom: 1px solid #000;*/
       }
 
       .canvas-cont{
@@ -108,8 +107,9 @@
     .crop-select {
         position: absolute;
         resize: both;
-        width: 100px;
-        height: 100px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
         overflow: auto;
         background: transparent;
         border: 2px dashed #fff;
@@ -119,7 +119,7 @@
     }
 
     .crop-canvas-background{
-      filter: opacity(0.6);
+      filter: opacity(0.6) brightness(0.4);
     }
 
     #filter-canvas{
@@ -130,11 +130,23 @@
     }
 
     .grascale-filter{
-      filter: grayscale(0.8);
+      filter: grayscale(1);
+    }
+
+    .rainy-filter{
+      filter: grayscale(0.4) saturate(0.7);
+    }
+
+    .evening-filter{
+      filter: hue-rotate(-40deg);
+    }
+
+    .dawn-filter{
+      filter: hue-rotate(-20deg);
     }
 
     .sepia-filter{
-      filter: sepia(0.7);
+      filter: sepia(1);
     }
 
     input, .hide{
@@ -151,7 +163,8 @@
 <body>
   <div class="header-cont">
     <header>
-      <h1>Image cr<span class="crop-transition heading-span">op</span> with canvas</h1>
+      <!-- <h1>Image cr<span class="crop-transition heading-span">op</span> with canvas</h1> -->
+      <h1>Crop and Filter</h1>
     </header>
   </div>
   <div class="tool-cont">
@@ -170,8 +183,11 @@
         <button class="crop-btn" onclick="createCropArea('event')">Crop</button>
         <button class="upload-btn" onclick="uploadImage('event')">Upload</button>
         <button class="crop-done" onclick="cropAreaSelelcted('event')">Done</button>
-        <button class="crop-btn gw-btn-filter" onclick="applyGwFilter('event')">G/W</button>
-        <button class="crop-btn sepia-btn-filter" onclick="applySepiaFilter('event')">Blue</button>
+        <button class="crop-btn gw-btn-filter" onclick="applyFilter('grayscale')">G/W</button>
+        <button class="crop-btn sepia-btn-filter" onclick="applyFilter('sepia')">Sepia</button>
+        <button class="crop-btn sepia-btn-filter" onclick="applyFilter('rainy')">Rainy</button>
+        <button class="crop-btn sepia-btn-filter" onclick="applyFilter('evening')">Evening</button>
+        <button class="crop-btn sepia-btn-filter" onclick="applyFilter('dawn')">Dawn</button>
       </div>
     </div>
   </div>
@@ -222,6 +238,10 @@
     function applySepiaFilter(){
       var filterCanvas = document.querySelector('#filter-canvas');
       filterCanvas.classList.add('sepia-filter');
+    }
+
+    function applyFilter(filter){
+      cropCanvasLib.applyFilter(filter);
     }
   </script>
 </body>
