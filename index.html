@@ -16,10 +16,13 @@
 
       .header-cont{
         background: -webkit-linear-gradient(left top, #084a58, #177b90);
+        position: fixed;
+        width: 100%;
         font-size: 23px;
         height: 120px;
         display: block;
         margin: auto 0;
+        z-index: 999;
       }
 
       .header-shrink{
@@ -28,11 +31,11 @@
       }
 
       .header-shrink h1{
-        font-size: 22px;
+        font-size: 33px;
       }
 
       .header-shrink header{
-        padding-top: 40px;
+        padding-top: 20px;
       }
 
       header{
@@ -49,8 +52,18 @@
         margin-top: 0;
       }
 
+      .main-container {
+        padding-top: 120px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
       .tool-cont{
-        padding-left: 23%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
       .canvas-cont{
@@ -69,9 +82,6 @@
 
       .btn-cont{
         padding: 14px;
-        /* padding-left: 20px; */
-        margin-right: 600px;
-        margin-left: 40px;
         background: #efefef;
       }
 
@@ -97,7 +107,6 @@
         line-height: 1.5;
         font-weight: 300;
         color: #3c3c3c;
-        padding-left: 250px;
         width: 750px;
       }
 
@@ -105,7 +114,6 @@
         position: relative;
         box-shadow: 2px -2px 10px 2px rgb(158, 158, 158);
         margin-top: 20px;
-        margin-left: 40px;
         width: 568px;
         text-align: center;
         height: 320px;
@@ -175,7 +183,6 @@
     }
 
     .filters-cont{
-      width: 100%;
       margin: 50px 0;
     }
 
@@ -208,49 +215,51 @@
       <h1>Cr<span class="heading-span">op</span> and Filter</h1>
     </header>
   </div>
-  <div class="description">
-    <p>Pure javascript tool to crop images using canvas and apply different kinds of filters provided by css3 and HTML5 canvas.
-       Use the sample image below to try the filters on or upload any landscape image(for now ;) and have fun with crop tool and filters</p>
-  </div>
-  <div class="tool-cont">
-    <div class="canvas-cont">
-      <div class="btn-cont effect-toolbar">
-        <button class="crop-btn" onclick="createCropArea('event')">Crop</button>
-        <button class="upload-btn" onclick="uploadImage('event')">Upload</button>
-        <button class="crop-done" onclick="cropAreaSelelcted('event')">Done</button>
-        <button class="crop-done">Reset</button>
-      </div>
-      <div class="placeholder-div">
-        <input type="file" id="image-input" accept="image/*" onchange="imageUpload('event')" >
-        <img src="images/flowers.jpg" class="sample-img" />
-        <canvas id="filter-canvas">
-          An alternative text describing what your canvas displays.
-        </canvas>
-        <canvas id="crop-canvas" width="568" height="320">
-          An alternative text describing what your canvas displays.
-        </canvas>
-      </div>
+  <div class="main-container">
+    <div class="description">
+      <p>Pure javascript tool to crop images using canvas and apply different kinds of filters provided by css3 and HTML5 canvas.
+         Use the sample image below to try the filters on or upload any landscape image(for now ;) and have fun with crop tool and filters</p>
     </div>
-    <div class="filters-cont">
-      <div class="filter-box grayscale-filter" onclick="applyFilter('grayscale')">
-        <img class"filter-img grayscale-filter" src="./images/flowers.jpg"/>
-        <p>Grayscale</p>
+    <div class="tool-cont">
+      <div class="canvas-cont">
+        <div class="btn-cont effect-toolbar">
+          <button class="crop-btn" onclick="createCropArea('event')">Crop</button>
+          <button class="upload-btn" onclick="uploadImage('event')">Upload</button>
+          <button class="crop-done" onclick="cropAreaSelelcted('event')">Done</button>
+          <button class="crop-done">Reset</button>
+        </div>
+        <div class="placeholder-div">
+          <input type="file" id="image-input" accept="image/*" onchange="imageUpload('event')" >
+          <img src="images/flowers.jpg" class="sample-img" />
+          <canvas id="filter-canvas">
+            An alternative text describing what your canvas displays.
+          </canvas>
+          <canvas id="crop-canvas" width="568" height="320">
+            An alternative text describing what your canvas displays.
+          </canvas>
+        </div>
       </div>
-      <div class="filter-box sepia-filter" onclick="applyFilter('sepia')">
-        <img class"filter-img sepia-filter" src="./images/flowers.jpg"/>
-        <p>Sepia</p>
-      </div>
-      <div class="filter-box rainy-filter" onclick="applyFilter('rainy')">
-        <img class"filter-img rainy-filter" src="./images/flowers.jpg"/>
-        <p>Rainy</p>
-      </div>
-      <div class="filter-box evening-filter" onclick="applyFilter('evening')">
-        <img class"filter-img evening-filter" src="./images/flowers.jpg"/>
-        <p>Evening</p>
-      </div>
-      <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
-        <img class"filter-img focus-filter" src="./images/flowers.jpg"/>
-        <p>Dawn<p>
+      <div class="filters-cont">
+        <div class="filter-box grayscale-filter" onclick="applyFilter('grayscale')">
+          <img class"filter-img grayscale-filter" src="./images/flowers.jpg"/>
+          <p>Grayscale</p>
+        </div>
+        <div class="filter-box sepia-filter" onclick="applyFilter('sepia')">
+          <img class"filter-img sepia-filter" src="./images/flowers.jpg"/>
+          <p>Sepia</p>
+        </div>
+        <div class="filter-box rainy-filter" onclick="applyFilter('rainy')">
+          <img class"filter-img rainy-filter" src="./images/flowers.jpg"/>
+          <p>Rainy</p>
+        </div>
+        <div class="filter-box evening-filter" onclick="applyFilter('evening')">
+          <img class"filter-img evening-filter" src="./images/flowers.jpg"/>
+          <p>Evening</p>
+        </div>
+        <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
+          <img class"filter-img focus-filter" src="./images/flowers.jpg"/>
+          <p>Dawn<p>
+        </div>
       </div>
     </div>
   </div>
