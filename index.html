@@ -7,6 +7,14 @@
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arimo" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Cabin" />
     <style>
+      ::-webkit-scrollbar {
+        width: 0px;  /* remove scrollbar space */
+        background: transparent;  /* optional: just make scrollbar invisible */
+      }
+      /* optional: show position indicator in red */
+      /*::-webkit-scrollbar-thumb {
+        background: #FF0000;
+      }*/
       body{
         margin: auto 0;
         background: #fff;
@@ -183,7 +191,19 @@
     }
 
     .filters-cont{
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      max-width: 600px;
+      flex-direction: row;
+      max-height: 120px;
       margin: 50px 0;
+    }
+
+    .filter-wrapper{
+      width: 100%;
+      display: flex;
+      overflow-x: scroll;
     }
 
     .filter-box {
@@ -194,7 +214,7 @@
 
     .filter-box img{
       object-fit: contain;
-      width: 100%;
+      width: 100px;
       border: 1px solid grey;
     }
 
@@ -204,6 +224,50 @@
       line-height: 1.5;
       font-weight: 300;
       color: #3c3c3c;
+    }
+
+    .for-btn {
+      width: 0;
+      height: 0;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      margin-top: 24px;
+      border-right: 25px solid black;
+      border-top: 25px solid transparent;
+      border-bottom: 25px solid transparent;
+    }
+
+    .back-btn {
+      width: 0;
+      height: 0;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      margin-top: 24px;
+      border-left: 25px solid black;
+      border-top: 25px solid transparent;
+      border-bottom: 25px solid transparent;
+    }
+
+    .forward-btn {
+      position: absolute;
+      bottom: 0;
+      background: rgba(148, 148, 148, 0.62);
+      left: 0;
+      width: 50px;
+      top: 0;
+      z-index: 1;
+    }
+
+    .backward-btn {
+      right: 0;
+      position: absolute;
+      bottom: 0;
+      background: rgba(148, 148, 148, 0.62);
+      width: 50px;
+      top: 0;
+      z-index: 1;
     }
 
     </style>
@@ -240,25 +304,45 @@
         </div>
       </div>
       <div class="filters-cont">
-        <div class="filter-box grayscale-filter" onclick="applyFilter('grayscale')">
-          <img class"filter-img grayscale-filter" src="./images/flowers.jpg"/>
-          <p>Grayscale</p>
+        <div class="forward-btn" onmouseover="scrollfilterToLeft()">
+          <button class="for-btn" onclick=""></button>
         </div>
-        <div class="filter-box sepia-filter" onclick="applyFilter('sepia')">
-          <img class"filter-img sepia-filter" src="./images/flowers.jpg"/>
-          <p>Sepia</p>
-        </div>
-        <div class="filter-box rainy-filter" onclick="applyFilter('rainy')">
-          <img class"filter-img rainy-filter" src="./images/flowers.jpg"/>
-          <p>Rainy</p>
-        </div>
-        <div class="filter-box evening-filter" onclick="applyFilter('evening')">
-          <img class"filter-img evening-filter" src="./images/flowers.jpg"/>
-          <p>Evening</p>
-        </div>
-        <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
-          <img class"filter-img focus-filter" src="./images/flowers.jpg"/>
-          <p>Dawn<p>
+        <div class="filter-wrapper">
+          <div class="filter-box grayscale-filter" onclick="applyFilter('grayscale')">
+            <img class"filter-img grayscale-filter" src="./images/flowers.jpg"/>
+            <p>Grayscale</p>
+          </div>
+          <div class="filter-box sepia-filter" onclick="applyFilter('sepia')">
+            <img class"filter-img sepia-filter" src="./images/flowers.jpg"/>
+            <p>Sepia</p>
+          </div>
+          <div class="filter-box rainy-filter" onclick="applyFilter('rainy')">
+            <img class"filter-img rainy-filter" src="./images/flowers.jpg"/>
+            <p>Rainy</p>
+          </div>
+          <div class="filter-box evening-filter" onclick="applyFilter('evening')">
+            <img class"filter-img evening-filter" src="./images/flowers.jpg"/>
+            <p>Evening</p>
+          </div>
+          <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
+            <img class"filter-img focus-filter" src="./images/flowers.jpg"/>
+            <p>Dawn<p>
+          </div>
+          <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
+            <img class"filter-img focus-filter" src="./images/flowers.jpg"/>
+            <p>Dawn<p>
+          </div>
+          <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
+            <img class"filter-img focus-filter" src="./images/flowers.jpg"/>
+            <p>Dawn<p>
+          </div>
+          <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
+            <img class"filter-img focus-filter" src="./images/flowers.jpg"/>
+            <p>Dawn<p>
+          </div>
+          <div class="backward-btn" onmouseover="scrollfilterToRight()">
+            <button class="back-btn"></button>
+          </div>
         </div>
       </div>
     </div>
@@ -290,6 +374,29 @@
       } else {
           headerElement.classList.remove('header-shrink');
       }
+    }
+
+    function scrollfilterToLeft () {
+      console.log('scrolling')
+      var filterWrapper =document.querySelector('.filter-wrapper')
+      var totalWidth = filterWrapper.scrollWidth
+
+      var i =0 
+
+      var scrollIntervalId = setInterval(function (){
+          if(i < totalWidth){
+            filterWrapper.scrollLeft = i;
+            i = i + 100
+          }else{
+            clearInterval(scrollIntervalId)
+          }
+        }, 100)
+    }
+
+    function scrollfilterToRight () {
+      console.log('scrolling')
+      var filterWrapper =document.querySelector('.filter-wrapper')
+      filterWrapper.scrollLeft -= 10;
     }
 
     var cropCanvasLib = new CropCanvasLib();
