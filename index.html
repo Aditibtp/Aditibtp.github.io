@@ -6,271 +6,7 @@
     <title>JS Experiments</title>
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arimo" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Cabin" />
-    <style>
-      ::-webkit-scrollbar {
-        width: 0px;  /* remove scrollbar space */
-        background: transparent;  /* optional: just make scrollbar invisible */
-      }
-      /* optional: show position indicator in red */
-      /*::-webkit-scrollbar-thumb {
-        background: #FF0000;
-      }*/
-      body{
-        margin: auto 0;
-        background: #fff;
-        height: 100%;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      }
-
-      .header-cont{
-        background: -webkit-linear-gradient(left top, #084a58, #177b90);
-        position: fixed;
-        width: 100%;
-        font-size: 23px;
-        height: 120px;
-        display: block;
-        margin: auto 0;
-        z-index: 999;
-      }
-
-      .header-shrink{
-        height: 80px;
-        transition: height 300ms;
-      }
-
-      .header-shrink h1{
-        font-size: 33px;
-      }
-
-      .header-shrink header{
-        padding-top: 20px;
-      }
-
-      header{
-        display: block;
-        height: 100%;
-        padding-top: 20px;
-      }
-
-      h1{
-        padding-left: 140px;
-        text-shadow: 5px 0px #000000;
-        color: #fff;
-        font-weight: 200;
-        margin-top: 0;
-      }
-
-      .main-container {
-        padding-top: 120px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .tool-cont{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .canvas-cont{
-        height: 100%;
-      }
-
-      .crop-transition{
-        transition: transform 200ms;
-        text-shadow: 0 0 #fff;
-        transform: rotate(45deg);
-        display: inline-block;
-        border: 1px dashed #fff;
-        color: #fff;
-        margin: 0px 14px;
-      }
-
-      .btn-cont{
-        padding: 14px;
-        background: #efefef;
-      }
-
-      button{
-        width: 60px;
-        height: 40px;
-        background: rgb(45, 154, 177);
-        border: 0;
-        color: white;
-        margin-left: 10px;
-        border-radius: 4px;
-        font-size: 13px;
-        outline: none;
-      }
-
-      #crop-canvas{
-        display: none;
-      }
-
-      .description{
-        margin: 40px 0;
-        font-size: 1em;
-        line-height: 1.5;
-        font-weight: 300;
-        color: #3c3c3c;
-        width: 750px;
-      }
-
-      .placeholder-div{
-        position: relative;
-        box-shadow: 2px -2px 10px 2px rgb(158, 158, 158);
-        margin-top: 20px;
-        width: 568px;
-        text-align: center;
-        height: 320px;
-      }
-
-      .placeholder-div p{
-        font-family: sans-serif;
-        color: grey;
-        font-size: 14px;
-      }
-
-      .sample-img{
-        width: 568px;
-        height: 320px;
-      }
-
-    .crop-select {
-        position: absolute;
-        resize: both;
-        width: 20px;
-        height: 20px;
-        overflow: auto;
-        background: transparent;
-        border: 2px dashed #fff;
-        background: rgba(0, 0, 0, 0.23);
-        top: 400px;
-        left: 500px;
-    }
-
-    .crop-canvas-background{
-      filter: opacity(0.6) brightness(0.4);
-    }
-
-    #filter-canvas{
-      border: 1px dashed #fff;
-      z-index: 10;
-      position: absolute;
-      display: none;
-    }
-
-    .grayscale-filter{
-      filter: grayscale(1);
-    }
-
-    .rainy-filter{
-      filter: grayscale(0.4) saturate(0.7);
-    }
-
-    .evening-filter{
-      filter: hue-rotate(-40deg);
-    }
-
-    .dawn-filter{
-      filter: hue-rotate(-20deg);
-    }
-
-    .sepia-filter{
-      filter: sepia(1);
-    }
-
-    input, .hide{
-      display: none;
-    }
-
-    .show{
-      display: block;
-    }
-
-    .filters-cont{
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      max-width: 600px;
-      flex-direction: row;
-      max-height: 120px;
-      margin: 50px 0;
-    }
-
-    .filter-wrapper{
-      width: 100%;
-      display: flex;
-      overflow-x: scroll;
-    }
-
-    .filter-box {
-      display: inline-block;
-      margin-left: 25px;
-      width: 100px;
-    }
-
-    .filter-box img{
-      object-fit: contain;
-      width: 100px;
-      border: 1px solid grey;
-    }
-
-    .filter-box p{
-      margin: 0;
-      font-size: 1em;
-      line-height: 1.5;
-      font-weight: 300;
-      color: #3c3c3c;
-    }
-
-    .for-btn {
-      width: 0;
-      height: 0;
-      border: 0;
-      background: transparent;
-      padding: 0;
-      margin-top: 24px;
-      border-right: 25px solid black;
-      border-top: 25px solid transparent;
-      border-bottom: 25px solid transparent;
-    }
-
-    .back-btn {
-      width: 0;
-      height: 0;
-      border: 0;
-      background: transparent;
-      padding: 0;
-      margin-top: 24px;
-      border-left: 25px solid black;
-      border-top: 25px solid transparent;
-      border-bottom: 25px solid transparent;
-    }
-
-    .forward-btn {
-      position: absolute;
-      bottom: 0;
-      background: rgba(148, 148, 148, 0.62);
-      left: 0;
-      width: 50px;
-      top: 0;
-      z-index: 1;
-    }
-
-    .backward-btn {
-      right: 0;
-      position: absolute;
-      bottom: 0;
-      background: rgba(148, 148, 148, 0.62);
-      width: 50px;
-      top: 0;
-      z-index: 1;
-    }
-
-    </style>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 
 <body onscroll="resizeHeader()">
@@ -294,7 +30,7 @@
         </div>
         <div class="placeholder-div">
           <input type="file" id="image-input" accept="image/*" onchange="imageUpload('event')" >
-          <img src="images/flowers.jpg" class="sample-img" />
+          <img src="images/facephoto.jpg" class="sample-img" />
           <canvas id="filter-canvas">
             An alternative text describing what your canvas displays.
           </canvas>
@@ -304,43 +40,43 @@
         </div>
       </div>
       <div class="filters-cont">
-        <div class="forward-btn" onmouseover="scrollfilterToLeft()">
+        <div class="forward-btn" onclick="scrollfilterToLeft()">
           <button class="for-btn" onclick=""></button>
         </div>
         <div class="filter-wrapper">
           <div class="filter-box grayscale-filter" onclick="applyFilter('grayscale')">
-            <img class"filter-img grayscale-filter" src="./images/flowers.jpg"/>
+            <img class"filter-img grayscale-filter" src="./images/facephoto.jpg"/>
             <p>Grayscale</p>
           </div>
           <div class="filter-box sepia-filter" onclick="applyFilter('sepia')">
-            <img class"filter-img sepia-filter" src="./images/flowers.jpg"/>
+            <img class"filter-img sepia-filter" src="./images/facephoto.jpg"/>
             <p>Sepia</p>
           </div>
           <div class="filter-box rainy-filter" onclick="applyFilter('rainy')">
-            <img class"filter-img rainy-filter" src="./images/flowers.jpg"/>
+            <img class"filter-img rainy-filter" src="./images/facephoto.jpg"/>
             <p>Rainy</p>
           </div>
           <div class="filter-box evening-filter" onclick="applyFilter('evening')">
-            <img class"filter-img evening-filter" src="./images/flowers.jpg"/>
+            <img class"filter-img evening-filter" src="./images/facephoto.jpg"/>
             <p>Evening</p>
           </div>
           <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
-            <img class"filter-img focus-filter" src="./images/flowers.jpg"/>
+            <img class"filter-img focus-filter" src="./images/facephoto.jpg"/>
             <p>Dawn<p>
           </div>
           <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
-            <img class"filter-img focus-filter" src="./images/flowers.jpg"/>
+            <img class"filter-img focus-filter" src="./images/facephoto.jpg"/>
             <p>Dawn<p>
           </div>
-          <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
-            <img class"filter-img focus-filter" src="./images/flowers.jpg"/>
-            <p>Dawn<p>
+          <div class="filter-box saturate-filter" onclick="applyFilter('saturate')">
+            <img class"filter-img saturate-filter" src="./images/facephoto.jpg"/>
+            <p>Saturate<p>
           </div>
-          <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
-            <img class"filter-img focus-filter" src="./images/flowers.jpg"/>
-            <p>Dawn<p>
+          <div class="filter-box lively-filter" onclick="applyFilter('lively')">
+            <img class"filter-img lively-filter" src="./images/facephoto.jpg"/>
+            <p>Lively<p>
           </div>
-          <div class="backward-btn" onmouseover="scrollfilterToRight()">
+          <div class="backward-btn" onclick="scrollfilterToRight()">
             <button class="back-btn"></button>
           </div>
         </div>
@@ -378,28 +114,18 @@
 
     function scrollfilterToLeft () {
       console.log('scrolling')
-      var filterWrapper =document.querySelector('.filter-wrapper')
+      var filterWrapper = document.querySelector('.filter-wrapper')
       var totalWidth = filterWrapper.scrollWidth
-
-      var i =0 
-
-      var scrollIntervalId = setInterval(function (){
-          if(i < totalWidth){
-            filterWrapper.scrollLeft = i;
-            i = i + 100
-          }else{
-            clearInterval(scrollIntervalId)
-          }
-        }, 100)
+      filterWrapper.scrollLeft -= 125;
     }
 
     function scrollfilterToRight () {
       console.log('scrolling')
-      var filterWrapper =document.querySelector('.filter-wrapper')
-      filterWrapper.scrollLeft -= 10;
+      var filterWrapper = document.querySelector('.filter-wrapper')
+      filterWrapper.scrollLeft += 125;
     }
 
-    var cropCanvasLib = new CropCanvasLib();
+    var cropCanvasLib = new window.CropCanvasLib();
 
     function createCropArea(){
       cropCanvasLib.createCropArea();
@@ -416,16 +142,6 @@
 
     function imageUpload(event){
       cropCanvasLib.uploadImage(event);
-    }
-
-    function applyGwFilter(){
-      var filterCanvas = document.querySelector('#filter-canvas');
-      filterCanvas.classList.add('grascale-filter');
-    }
-
-    function applySepiaFilter(){
-      var filterCanvas = document.querySelector('#filter-canvas');
-      filterCanvas.classList.add('sepia-filter');
     }
 
     function applyFilter(filter){
