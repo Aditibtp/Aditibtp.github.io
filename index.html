@@ -1,152 +1,428 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+	<head>
+	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimal-ui">
+	
+	<title>Aditi Sharma</title>
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/2.0.2/octicons.min.css">
+	
+	<style type="text/css">
+	@import url(
+	https://fonts.googleapis.com/css?family=Lato:400,700
+);
+body {
+	background: #fff;
+	font-family: Lato, sans-serif;
+	margin: 0 0 80px;
+}
+a {
+	color: #2ecc71;
+}
+a:focus,
+a:hover {
+	color: #f1c40f;
+	text-decoration: none;
+}
+p {
+	line-height: 1.5;
+	margin: 0;
+}
+p + p {
+	margin-top: 10px;
+}
+h1,
+h2,
+h3,
+h4 {
+	margin-top: 0
+}
+section {
+	margin-top: 30px;
+}
+li {
+	line-height: 1.8;
+	list-style: none;
+}
+li:before {
+	content: "\f052";
+	float: left;
+	font: 13px Octicons;
+	margin-top: 6px;
+	margin-left: -20px;
+	opacity: .1;
+	position: absolute;
+}
+blockquote {
+	border-left: 5px solid #e7e9ec;
+	font-size: 14px;
+}
+em {
+	color: #95a5a6;
+	font-weight: normal;
+	font-style: normal;
+}
+h4 span:first-child {
+	color: #000;
+	font-weight: bold;
+}
+.container {
+	max-width: 750px;
+	padding: 0 30px;
+}
+.col-sm-6 {
+	margin-bottom: 10px;
+}
+.col-sm-12 h4 {
+	margin-top: 12px; 
+}
+.col-sm-12 + .col-sm-12 {
+	margin-top: 30px;
+}
+#header {
+	background: #72dada;
+	padding: 50px 0;
+	margin-bottom: 30px;
+}
+#header h2 {
+	color: #4f5656;
+	font-size: 24px;
+}
+#content h3 {
+	color: #f1c40f;
+	font-size: 26px;
+	margin-top: -4px;
+}
+#content aside {
+	text-align: right;
+	padding-right: 30px;
+}
+#profiles .network {
+	text-transform: capitalize;
+}
+#work .position,
+#volunteer .position {
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+#education .area {
+	font-weight: bold;
+}
+#education .area:before {
+	content: "\f0d7";
+	font: 16px Octicons;
+	margin-right: 6px;
+}
+#education .studyType {
+	margin-left: 25px;
+}
+#awards .summary,
+#publications .summary {
+	margin-top: 8px;
+}
+#publications .website a:before {
+	content: attr(href);
+}
 
-<head>
-    <meta charset="utf-8" />
-    <title>JS Experiments</title>
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arimo" />
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Cabin" />
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-</head>
+@media (min-width: 480px) {
+	.strike-through {
+		border-top: 1px solid #f4f6f6;
+		height: 20px;
+		margin-top: 12px;
+		margin-bottom: -2px;
+		position: relative;
+	}
+	.strike-through span,
+	.strike-through a {
+		background: #fff;
+		position: absolute;
+	}
+	.strike-through span:first-child {
+		padding-right: 20px;
+		margin-top: -12px;
+	}
+	.strike-through span + span {
+		font-size: 14px;
+		margin-top: -10px;
+		padding-left: 20px;
+		right: 0;
+	}
+}
+@media (max-width: 768px) {
+	.col-sm-6:last-child {
+		margin-bottom: 0px;
+	}
+	#content aside {
+		margin-bottom: 20px;
+		padding-right: 0;
+		text-align: left;
+	}
+	#publications .website a:before {
+		content: "View publication";
+	}
+}
+@media (max-width: 480px) {
+	h1 {
+		font-size: 26px;
+	}
+	.date {
+		font-size: 14px;
+		margin-bottom: 5px;
+	}
+	.strike-through span:first-child {
+		margin-bottom: 7px;
+	}
+	.strike-through span {
+		display: block;
+	}	
+	#header {
+		margin-bottom: 10px;
+		padding: 40px 0;
+	}
+	#actions {
+		display: none;
+	}
+}
 
-<body onscroll="resizeHeader()">
-  <div class="header-cont" id="main-header">
-    <header>
-      <h1>Cr<span class="heading-span">op</span> and Filter</h1>
-    </header>
-  </div>
-  <div class="main-container">
-    <div class="description">
-      <p>Pure javascript tool to crop images using canvas and apply different kinds of filters provided by css3 and HTML5 canvas.
-         Use the sample image below to try the filters on or upload any landscape image(for now ;) and have fun with crop tool and filters</p>
-    </div>
-    <div class="tool-cont">
-      <div class="canvas-cont">
-        <div class="btn-cont effect-toolbar">
-          <button class="crop-btn" onclick="createCropArea('event')">Crop</button>
-          <button class="upload-btn" onclick="uploadImage('event')">Upload</button>
-          <button class="crop-done" onclick="cropAreaSelelcted('event')">Done</button>
-          <button class="crop-done">Reset</button>
-        </div>
-        <div class="placeholder-div">
-          <input type="file" id="image-input" accept="image/*" onchange="imageUpload('event')" >
-          <img src="images/facephoto.jpg" class="sample-img" />
-          <canvas id="filter-canvas">
-            An alternative text describing what your canvas displays.
-          </canvas>
-          <canvas id="crop-canvas" width="568" height="320">
-            An alternative text describing what your canvas displays.
-          </canvas>
-        </div>
-      </div>
-      <div class="filters-cont">
-        <div class="forward-btn" onclick="scrollfilterToLeft()">
-          <button class="for-btn" onclick=""></button>
-        </div>
-        <div class="filter-wrapper">
-          <div class="filter-box grayscale-filter" onclick="applyFilter('grayscale')">
-            <img class"filter-img grayscale-filter" src="./images/facephoto.jpg"/>
-            <p>Grayscale</p>
-          </div>
-          <div class="filter-box sepia-filter" onclick="applyFilter('sepia')">
-            <img class"filter-img sepia-filter" src="./images/facephoto.jpg"/>
-            <p>Sepia</p>
-          </div>
-          <div class="filter-box rainy-filter" onclick="applyFilter('rainy')">
-            <img class"filter-img rainy-filter" src="./images/facephoto.jpg"/>
-            <p>Rainy</p>
-          </div>
-          <div class="filter-box evening-filter" onclick="applyFilter('evening')">
-            <img class"filter-img evening-filter" src="./images/facephoto.jpg"/>
-            <p>Evening</p>
-          </div>
-          <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
-            <img class"filter-img focus-filter" src="./images/facephoto.jpg"/>
-            <p>Dawn<p>
-          </div>
-          <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
-            <img class"filter-img focus-filter" src="./images/facephoto.jpg"/>
-            <p>Dawn<p>
-          </div>
-          <div class="filter-box saturate-filter" onclick="applyFilter('saturate')">
-            <img class"filter-img saturate-filter" src="./images/facephoto.jpg"/>
-            <p>Saturate<p>
-          </div>
-          <div class="filter-box lively-filter" onclick="applyFilter('lively')">
-            <img class"filter-img lively-filter" src="./images/facephoto.jpg"/>
-            <p>Lively<p>
-          </div>
-          <div class="backward-btn" onclick="scrollfilterToRight()">
-            <button class="back-btn"></button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	</style>
+	
+	</head>
+	<body>
+	
+	<header id="header">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-9 col-sm-push-3">
+					<h1>
+						Aditi Sharma
+					</h1>
+					<h2>
+						UI Developer
+					</h2>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div id="content" class="container">
 
-  <script type="text/javascript" src="./canvas-script.js"></script>
-  <script>
-    var _document = document;
-    var cropTopOffset;
-    var cropLeftOffset;
-    var cropCanvas = _document.getElementById('crop-canvas');
-    var cropContext = cropCanvas.getContext("2d");
-    var cropImage = new Image();
-    /***top header style*****/
-    var heading =  document.getElementById("main-header");
-    heading.addEventListener("mouseover", function(){
-      var transitionSpan = _document.getElementsByClassName("heading-span")[0];
-      transitionSpan.classList.add('crop-transition');
-    });
-    heading.addEventListener("mouseout", function(){
-      var transitionSpan = _document.getElementsByClassName("heading-span")[0];
-      transitionSpan.classList.remove('crop-transition');
-    });
+	<section id="contact" class="row">
+		<aside class="col-sm-3">
+			<h3>Contact</h3>
+		</aside>
+		<div class="col-sm-9">
+			<div class="row">
+			<div class="col-sm-6">
+				<strong>Email</strong>
+				<div class="email">aditisharmabtp@gmail.com</div>
+			</div>
+			<div class="col-sm-6">
+				<strong>Phone</strong>
+				<div class="phone">(91)-7406797895</div>
+			</div>
+			<div class="col-sm-6">
+				<strong>Website</strong>
+				<div class="website">
+					<a href="aditibtp.github.io">aditibtp.github.io</a>
+				</div>
+			</div>
+			</div>
+		</div>
+	</section>
+	<section id="about" class="row">
+		<aside class="col-sm-3">
+			<h3>About</h3>
+		</aside>
+		<div class="col-sm-9">
+			<p>I am a Front-end developer with three years of experience working with javascript and its various libraries. I am a self learner. Looking to obtain a professional position by utilising my academic and work experience where i can develop excellent acumen to write software with complete awareness of its performance and business implications.</p>
+		</div>
+	</section>
+	<section id="profiles" class="row">
+		<aside class="col-sm-3">
+			<h3>Profiles</h3>
+		</aside>
+		<div class="col-sm-9">
+			<div class="row">
+				<div class="col-sm-6">
+					<strong class="network">
+						Github
+					</strong>
+					<div class="username">
+						<div class="url">
+							<a href="https://github.com/Aditibtp">aditibtp</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
-    function resizeHeader(){
-      var headerElement = document.getElementById("main-header");
-      if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-          headerElement.classList.add('header-shrink');
-      } else {
-          headerElement.classList.remove('header-shrink');
-      }
-    }
+	<section id="work" class="row">
+		<aside class="col-sm-3">
+			<h3>Work</h3>
+		</aside>
+		<div class="col-sm-9">
+			<div class="row">
+			<div class="col-sm-12">
+				<h4 class="strike-through">
+					<span>InMobi</span>
+					<span class="date">
+						 — 
+					</span>
+				</h4>
+				<div class="website pull-right">
+					<a href="http://www.inmobi.com">http://www.inmobi.com</a>
+				</div>
+				<div class="position">
+					Software Engineer-UI
+				</div>
+				<div class="summary">
+					<p>Working as a Front-end developer for creating templates for video ads format and creation of various creative management portals.</p>
+				</div>
+				<h4>Highlights</h4>
+				<ul class="highlights">
+					<li class="bullet">Working on building video ads and explored solutions for prebu􀃗ering videos for a bu􀃗er free instant play experience that helped in improving the render rates and play rates signi􀃒cantly. Worked on implementing VAST and VPAID mobile video technologies. Also implemented viewability tracking in the video ads through Moat and IAS integrations.</li>
+					<li class="bullet">Created grunt tasks to optimize the publishing of creatives(ad-tags) directy instead of using studio tool.</li>
+					<li class="bullet">Currently working on an ad-preview tool called Helix using google polymer and reactjs frameworks. The tool is made up of web-components built using polymer. It also consists of a reporting section which showcases the performance of an ad-creative in terms of impressions, render rate and play rate built using highcharts graphing library. The tool has a folio section built using react js which provides content-editable inputs, allowing the adcampaign managers to showcase their creatives.</li>
+				</ul>
+			</div>
+			<div class="col-sm-12">
+				<h4 class="strike-through">
+					<span>Cerner Corporation</span>
+					<span class="date">
+						2014-10-09 — 2016-04-01
+					</span>
+				</h4>
+				<div class="website pull-right">
+					<a href="https://www.cerner.com/">https://www.cerner.com/</a>
+				</div>
+				<div class="position">
+					Software Engineer
+				</div>
+				<div class="summary">
+					<p>Worked on MPages framework which requires creation of separate web-pages based on data to be shown to target audience.</p>
+				</div>
+				<h4>Highlights</h4>
+				<ul class="highlights">
+					<li class="bullet">Worked mostly on Object Oriented JavaScript and CSS to create and design a web page.</li>
+					<li class="bullet">Presented a talk in DevCon India 2015 (annual Cerner event) on 2015-10-30. The talk was about ES6 new features. The features were explained with help of small examples and how they can be used in the existing Mpage(cerner specific) library.</li>
+				</ul>
+			</div>
+			<div class="col-sm-12">
+				<h4 class="strike-through">
+					<span>Chalkstreet.in</span>
+					<span class="date">
+						2014-01-13 — 2014-06-18
+					</span>
+				</h4>
+				<div class="website pull-right">
+					<a href="https://www.chalkstreet.com/">https://www.chalkstreet.com/</a>
+				</div>
+				<div class="position">
+					Associate Software developer (Intern)
+				</div>
+				<div class="summary">
+					<p>The internship involved creation of web-application to enhance e-learning experience from both student and teacher perspective.</p>
+				</div>
+				<h4>Highlights</h4>
+				<ul class="highlights">
+					<li class="bullet">Designed and created an entire portal which included creation of web-pages shown to target audience (students).</li>
+					<li class="bullet">Worked on both front-end and backend using jquery and php respectively.</li>
+				</ul>
+			</div>
+			</div>
+		</div>
+	</section>
 
-    function scrollfilterToLeft () {
-      console.log('scrolling')
-      var filterWrapper = document.querySelector('.filter-wrapper')
-      var totalWidth = filterWrapper.scrollWidth
-      filterWrapper.scrollLeft -= 125;
-    }
+	
+	<section id="education" class="row">
+		<aside class="col-sm-3">
+			<h3>Education</h3>
+		</aside>
+		<div class="col-sm-9">
+			<div class="row">
+			<div class="col-sm-12">
+				<h4 class="strike-through">
+					<span>Vellore Institute Of Technology</span>
+					<span class="date">
+						2010-07 — 2014-05
+					</span>
+				</h4>
+				<div class="area">
+					Information Technology
+				</div>
+				<div class="studyType">
+					Bachelor of Technology (CGPA: 8.90)
+				</div>
+			</div>
+			</div>
+		</div>
+	</section>
+	
+	
+	<section id="publications" class="row">
+		<aside class="col-sm-3">
+			<h3>Projects</h3>
+		</aside>
+		<div class="col-sm-9">
+			<div class="row">
+			<div class="col-sm-12">
+				<h4 class="strike-through">
+					<span>Manage Tabs</span>
+					<span class="date">
+						
+					</span>
+				</h4>
+				<div class="website pull-right">
+					<a href="https://chrome.google.com/webstore/detail/manage-tabs/odgnioajlfckhbomaidnajdfnkmmolai">Link</a>
+				</div>
+				<div class="summary">
+					<p>Manage Tabs a minimal vanilla javascript chrome extension to show a list of tabs opened by user. The extension allows them to navigate on chrome and close the tabs. It also provides a search input to 􀃒nd a particular opened tab by typing in the title of the webpage.</p>
+				</div>
+			</div>
+			</div>
+		</div>
+	</section>
+	
+	<section id="skills" class="row">
+		<aside class="col-sm-3">
+			<h3>Skills</h3>
+		</aside>
+		<div class="col-sm-9">
+			<div class="row">
+			<div class="col-sm-6">
+				<div class="name">
+					<h4>Web Development</h4>
+				</div>
+				<ul class="keywords">
+					<li>HTML</li>
+					<li>CSS</li>
+					<li>Javascript</li>
+					<li>Polymer js</li>
+					<li>React js</li>
+					<li>Node js</li>
+				</ul>
+			</div>
+			<div class="col-sm-6">
+				<div class="name">
+					<h4>Programming Languages</h4>
+				</div>
+				<ul class="keywords">
+					<li>Java</li>
+					<li>C</li>
+					<li>C++</li>
+				</ul>
+			</div>
+			</div>
+		</div>
+	</section>
 
-    function scrollfilterToRight () {
-      console.log('scrolling')
-      var filterWrapper = document.querySelector('.filter-wrapper')
-      filterWrapper.scrollLeft += 125;
-    }
 
-    var cropCanvasLib = new window.CropCanvasLib();
+	
 
-    function createCropArea(){
-      cropCanvasLib.createCropArea();
-    }
-
-    function cropAreaSelelcted(e){
-      cropCanvasLib.cropAreaSelelcted(e);
-    }
-
-    function uploadImage(){
-      var input = document.querySelector('input');
-      input.click();
-    }
-
-    function imageUpload(event){
-      cropCanvasLib.uploadImage(event);
-    }
-
-    function applyFilter(filter){
-      cropCanvasLib.applyFilter(filter);
-    }
-  </script>
-</body>
+	</div>
+	
+	</body>
 </html>
