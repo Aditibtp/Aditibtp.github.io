@@ -11,9 +11,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/2.0.2/octicons.min.css">
 	
 	<style type="text/css">
-	@import url(
-	https://fonts.googleapis.com/css?family=Lato:400,700
-);
+	@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
 body {
 	background: #fff;
 	font-family: Lato, sans-serif;
@@ -86,11 +84,50 @@ h4 span:first-child {
 	background: #72dada;
 	padding: 50px 0;
 	margin-bottom: 30px;
+	transition: background-color 2s ease-out;
 }
-#header h2 {
+#header:hover{
+	   background-color: #2ecc71;
+}	
+h1.typewriter, h2.typewriter {
+	width: 60%;
+  color: #000;
+  font-family: monospace;
+  overflow: hidden;
+  border-right: .15em solid transparent; 
+  white-space: nowrap; 
+  margin: 0 auto;
+  letter-spacing: .12em;
+  animation: 
+    typing1 3s steps(30, end),
+    blink-caret .4s step-end 8;
+}
+h2.typewriter{
+	visibility: hidden;
+	animation: 
+    typing2 3s  4s steps(30, end) forwards,
+    blink-caret .4s step-end 17;
+}
+/* The typing effect */
+@keyframes typing1 {
+  from { width: 0 }
+  to { width: 60%; visibility: visible;}
+}
+
+@keyframes typing2 {
+  from { width: 0 }
+  to { width: 75%; visibility: visible; }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange }
+}
+
+/*#header h2 {
 	color: #4f5656;
 	font-size: 24px;
-}
+}*/
 #content h3 {
 	color: #f1c40f;
 	font-size: 26px;
@@ -181,6 +218,11 @@ h4 span:first-child {
 	#header {
 		margin-bottom: 10px;
 		padding: 40px 0;
+		background-color: red;
+		transition: background-color 2s ease-out;
+	}
+	#header:hover{
+	   background-color: #2ecc71;
 	}
 	#actions {
 		display: none;
@@ -195,11 +237,11 @@ h4 span:first-child {
 	<header id="header">
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-9 col-sm-push-3">
-					<h1>
+				<div class="col-sm-9 col-sm-push-2">
+					<h1 class="typewriter">
 						Aditi Sharma
 					</h1>
-					<h2>
+					<h2  class="typewriter">
 						Software Developer
 					</h2>
 				</div>
@@ -213,7 +255,7 @@ h4 span:first-child {
 		</aside>
 		<div class="col-sm-9">
 			<p>I am a software developer with 4 years of work experience in information technology industry, currently pursuing masters in computer science at the Ohio State University.
-				 I have worked with various technologies such as core java, C++, javascript python, node js, html5 and css3. I am currently looking for an internship oppurtunity for summer 2019. </p>
+				 I have worked with various technologies such as core java, C++, javascript, python, node js, html5 and css3. I am currently looking for an internship oppurtunity for summer 2019. </p>
 		</div>
 	</section>
 	<section id="profiles" class="row">
@@ -330,20 +372,36 @@ h4 span:first-child {
 		</aside>
 		<div class="col-sm-9">
 			<div class="row">
-			<div class="col-sm-12">
-				<h4 class="strike-through">
-					<span>Vellore Institute Of Technology</span>
-					<span class="date">
-						2010-07 — 2014-05
-					</span>
-				</h4>
-				<div class="area">
-					Information Technology
-				</div>
-				<div class="studyType">
-					Bachelor of Technology (CGPA: 8.90)
+				<div class="col-sm-12">
+					<h4 class="strike-through">
+						<span>The Ohio State University</span>
+						<span class="date">
+							2018-08 — 2020-05
+						</span>
+					</h4>
+					<div class="area">
+						Computer Science
+					</div>
+					<div class="studyType">
+						Master of Science
+					</div>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<h4 class="strike-through">
+						<span>Vellore Institute Of Technology</span>
+						<span class="date">
+							2010-07 — 2014-05
+						</span>
+					</h4>
+					<div class="area">
+						Information Technology
+					</div>
+					<div class="studyType">
+						Bachelor of Technology (CGPA: 8.90)
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -355,20 +413,62 @@ h4 span:first-child {
 		</aside>
 		<div class="col-sm-9">
 			<div class="row">
-			<div class="col-sm-12">
-				<h4 class="strike-through">
-					<span>Manage Tabs</span>
-					<span class="date">
-						
-					</span>
-				</h4>
-				<div class="website pull-right">
-					<a href="https://chrome.google.com/webstore/detail/manage-tabs/odgnioajlfckhbomaidnajdfnkmmolai">Link</a>
+				<div class="col-sm-12">
+					<h4 class="strike-through">
+						<span>React weather app</span>
+						<span class="date">
+						</span>
+					</h4>
+					<div class="website pull-right">
+						<a href=""></a>
+					</div>
+					<div class="summary">
+						<p>Created a react app using open weather api and google maps to show weather of a partiular place as the use clicks on a location, or searches for it in search bar.
+						</p>
+					</div>
 				</div>
-				<div class="summary">
-					<p>Manage Tabs a minimal vanilla javascript chrome extension to show a list of tabs opened by user. The extension allows them to navigate on chrome and close the tabs. It also provides a search input to 􀃒nd a particular opened tab by typing in the title of the webpage.</p>
+				<div class="col-sm-12">
+					<h4 class="strike-through">
+						<span>Restaurant simulation using java multithreading apis</span>
+						<span class="date">
+						</span>
+					</h4>
+					<div class="website pull-right">
+						<a href=""></a>
+					</div>
+					<div class="summary">
+						<p>Created a restaurant simulation using multithreading constructs available in java to simulate a restaurant environment to spawn individual threads for diners and cooks. Used semaphore and lock classes to manage resource allocation such as machines and dining tables.
+						</p>
+					</div>
 				</div>
-			</div>
+				<div class="col-sm-12">
+					<h4 class="strike-through">
+						<span>Predicting populatiry of social media articles</span>
+						<span class="date">
+						</span>
+					</h4>
+					<div class="website pull-right">
+						<a href=""></a>
+					</div>
+					<div class="summary">
+						<p>Performed classification and prediction analysis on social media articles published on mashable inc., using sklearn library. The data used for analysis was from uci repository. The analysis was aimed at finding out a feature subset that most affected an articles’s popularity in terms of number of shares it received on social media.
+						</p>
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<h4 class="strike-through">
+						<span>Manage Tabs</span>
+						<span class="date">
+							
+						</span>
+					</h4>
+					<div class="website pull-right">
+						<a href="https://chrome.google.com/webstore/detail/manage-tabs/odgnioajlfckhbomaidnajdfnkmmolai">Link</a>
+					</div>
+					<div class="summary">
+						<p>Manage Tabs is a minimal vanilla javascript chrome extension to show a list of tabs opened by user. The extension allows them to navigate on chrome and close the tabs. It also provides a search input to 􀃒nd a particular opened tab by typing in the title of the webpage.</p>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
@@ -405,9 +505,6 @@ h4 span:first-child {
 			</div>
 		</div>
 	</section>
-
-
-	
 
 	</div>
 	
