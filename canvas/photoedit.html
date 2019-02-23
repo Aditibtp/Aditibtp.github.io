@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>JS Experiments</title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Arimo" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Cabin" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+
+<body onscroll="resizeHeader()">
+  <div class="header-cont" id="main-header">
+    <header>
+      <h1>Cr<span class="heading-span">op</span> and Filter</h1>
+    </header>
+  </div>
+  <div class="main-container">
+    <div class="description">
+      <p>Pure javascript tool to crop images using canvas and apply different kinds of filters provided by css3 and HTML5 canvas.
+         Use the sample image below to try the filters on or upload any landscape image(for now ;) and have fun with crop tool and filters</p>
+    </div>
+    <div class="tool-cont">
+      <div class="canvas-cont">
+        <div class="btn-cont effect-toolbar">
+          <button class="crop-btn" onclick="createCropArea('event')">Crop</button>
+          <button class="upload-btn" onclick="uploadImage('event')">Upload</button>
+          <button class="crop-done" onclick="cropAreaSelelcted('event')">Done</button>
+          <button class="crop-done">Reset</button>
+        </div>
+        <div class="placeholder-div">
+          <input type="file" id="image-input" accept="image/*" onchange="imageUpload('event')" >
+          <img src="images/facephoto.jpg" class="sample-img" />
+          <canvas id="filter-canvas">
+            An alternative text describing what your canvas displays.
+          </canvas>
+          <canvas id="crop-canvas" width="568" height="320">
+            An alternative text describing what your canvas displays.
+          </canvas>
+        </div>
+      </div>
+      <div class="filters-cont">
+        <div class="forward-btn" onclick="scrollfilterToLeft()">
+          <button class="for-btn" onclick=""></button>
+        </div>
+        <div class="filter-wrapper">
+          <div class="filter-box grayscale-filter" onclick="applyFilter('grayscale')">
+            <img class"filter-img grayscale-filter" src="./images/facephoto.jpg"/>
+            <p>Grayscale</p>
+          </div>
+          <div class="filter-box sepia-filter" onclick="applyFilter('sepia')">
+            <img class"filter-img sepia-filter" src="./images/facephoto.jpg"/>
+            <p>Sepia</p>
+          </div>
+          <div class="filter-box rainy-filter" onclick="applyFilter('rainy')">
+            <img class"filter-img rainy-filter" src="./images/facephoto.jpg"/>
+            <p>Rainy</p>
+          </div>
+          <div class="filter-box evening-filter" onclick="applyFilter('evening')">
+            <img class"filter-img evening-filter" src="./images/facephoto.jpg"/>
+            <p>Evening</p>
+          </div>
+          <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
+            <img class"filter-img focus-filter" src="./images/facephoto.jpg"/>
+            <p>Dawn<p>
+          </div>
+          <div class="filter-box focus-filter" onclick="applyFilter('dawn')">
+            <img class"filter-img focus-filter" src="./images/facephoto.jpg"/>
+            <p>Dawn<p>
+          </div>
+          <div class="filter-box saturate-filter" onclick="applyFilter('saturate')">
+            <img class"filter-img saturate-filter" src="./images/facephoto.jpg"/>
+            <p>Saturate<p>
+          </div>
+          <div class="filter-box lively-filter" onclick="applyFilter('lively')">
+            <img class"filter-img lively-filter" src="./images/facephoto.jpg"/>
+            <p>Lively<p>
+          </div>
+          <div class="backward-btn" onclick="scrollfilterToRight()">
+            <button class="back-btn"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="./canvas-script.js"></script>
+  <script>
+    var _document = document;
+    var cropTopOffset;
+    var cropLeftOffset;
+    var cropCanvas = _document.getElementById('crop-canvas');
+    var cropContext = cropCanvas.getContext("2d");
+    var cropImage = new Image();
+    /***top header style*****/
+    var heading =  document.getElementById("main-header");
+    heading.addEventListener("mouseover", function(){
+      var transitionSpan = _document.getElementsByClassName("heading-span")[0];
+      transitionSpan.classList.add('crop-transition');
+    });
+    heading.addEventListener("mouseout", function(){
+      var transitionSpan = _document.getElementsByClassName("heading-span")[0];
+      transitionSpan.classList.remove('crop-transition');
+    });
+
+    function resizeHeader(){
+      var headerElement = document.getElementById("main-header");
+      if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+          headerElement.classList.add('header-shrink');
+      } else {
+          headerElement.classList.remove('header-shrink');
+      }
+    }
+
+    function scrollfilterToLeft () {
+      console.log('scrolling')
+      var filterWrapper = document.querySelector('.filter-wrapper')
+      var totalWidth = filterWrapper.scrollWidth
+      filterWrapper.scrollLeft -= 125;
+    }
+
+    function scrollfilterToRight () {
+      console.log('scrolling')
+      var filterWrapper = document.querySelector('.filter-wrapper')
+      filterWrapper.scrollLeft += 125;
+    }
+
+    var cropCanvasLib = new window.CropCanvasLib();
+
+    function createCropArea(){
+      cropCanvasLib.createCropArea();
+    }
+
+    function cropAreaSelelcted(e){
+      cropCanvasLib.cropAreaSelelcted(e);
+    }
+
+    function uploadImage(){
+      var input = document.querySelector('input');
+      input.click();
+    }
+
+    function imageUpload(event){
+      cropCanvasLib.uploadImage(event);
+    }
+
+    function applyFilter(filter){
+      cropCanvasLib.applyFilter(filter);
+    }
+  </script>
+</body>
+</html>
